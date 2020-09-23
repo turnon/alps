@@ -1,15 +1,9 @@
+require "plux"
+
 module Alps
-  module Server
-
-    class << self
-      def start(name)
-        Plux.worker(name) do
-          def work(msg)
-            pp Marshal.load(msg)
-          end
-        end
-      end
+  class Server < ::Plux::Engine
+    def process(msg)
+      pp Marshal.load(msg)
     end
-
   end
 end

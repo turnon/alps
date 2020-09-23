@@ -1,7 +1,6 @@
 require "alps/version"
 require "alps/point"
 require "alps/server"
-require "plux"
 
 module Alps
 
@@ -15,7 +14,7 @@ module Alps
 
   class << self
     def x(name)
-      server = Server.start(name)
+      server = Server.new(name)
 
       tp = TracePoint.new(*Events) do |p|
         p = Point.new(p)
