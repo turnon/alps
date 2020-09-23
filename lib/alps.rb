@@ -4,13 +4,7 @@ require "alps/server"
 
 module Alps
 
-  Events = [
-    :b_call, :b_return,
-    :c_call, :c_return,
-    :call, :return,
-    :class, :end,
-    :thread_begin, :thread_end
-  ]
+  Events = Point::StartEvents + Point::EndEvents
 
   class << self
     def x(name)
