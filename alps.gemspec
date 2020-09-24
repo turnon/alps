@@ -25,4 +25,6 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency "pry"
 
   spec.add_dependency "plux", "~> 0.1.7"
+  spec.add_dependency "sqlite3", "~> 1.4.2"
+  spec.add_dependency "sequel", "~> 5.36.0"
 end
