@@ -39,7 +39,7 @@ module Alps
 
     EventIds = Point::Events.each_with_index.to_a.to_h
 
-    attr_reader :points, :point_model
+    attr_reader :point
 
     def initialize(db)
       @db = db
@@ -56,7 +56,7 @@ module Alps
 
     def append(point)
       @db.transaction do
-        points.insert(
+        @points.insert(
           calling_id: fetch_calling_id(point),
           event: EventIds[point.event],
           tid: point.tid,
@@ -84,22 +84,24 @@ module Alps
     end
 
     def construct_point_model
-      file_model = Class.new(Sequel::Model(:src_files)) do
+      file_model = Class.new(Sequel::Model(@files)) do
         def self.constantize
           self
         end
       end
 
-      method_model = Class.new(Sequel::Model(:callings)) do
+      method_model = Class.new(Sequel::Model(@callings)) do
         def self.constantize
           self
         end
       end
 
-      @point_model = Class.new(Sequel::Model(:points)) do
+      point_model = Class.new(Sequel::Model(@points)) do
         many_to_one :src_file, :class => file_model
         many_to_one :calling, :class => method_model
       end
+
+      @point = point_model.association_join(:src_file, :calling)
     end
 
   end
