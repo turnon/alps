@@ -1,6 +1,7 @@
 require "fileutils"
 require "sequel"
 require "alps/point"
+require "alps/db/point_model"
 
 module Alps
   class DB
@@ -16,7 +17,7 @@ module Alps
         db.table_exists?(:points) || db.create_table(:points) do
           primary_key :id
           column :calling_id, Integer
-          column :event, Integer
+          column :event_id, Integer
           column :tid, Integer
           column :pid, Integer
           column :src_file_id, Integer
@@ -51,14 +52,14 @@ module Alps
       @cache_files = {}
 
       @points = db[:points]
-      construct_point_model
+      @point = PointModel.construct_point_model(@points, @files, @callings)
     end
 
     def append(point)
       @db.transaction do
         @points.insert(
           calling_id: fetch_calling_id(point),
-          event: EventIds[point.event],
+          event_id: EventIds[point.event],
           tid: point.tid,
           pid: point.pid,
           src_file_id: fetch_file_id(point),
@@ -81,27 +82,6 @@ module Alps
         @files.where(path: path).get(:id) ||
         @files.insert(path: path)
       )
-    end
-
-    def construct_point_model
-      file_model = Class.new(Sequel::Model(@files)) do
-        def self.constantize
-          self
-        end
-      end
-
-      method_model = Class.new(Sequel::Model(@callings)) do
-        def self.constantize
-          self
-        end
-      end
-
-      point_model = Class.new(Sequel::Model(@points)) do
-        many_to_one :src_file, :class => file_model
-        many_to_one :calling, :class => method_model
-      end
-
-      @point = point_model.association_join(:src_file, :calling)
     end
 
   end
