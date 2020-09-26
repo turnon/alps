@@ -7,6 +7,7 @@ module Alps
 
     StartEvents = [:call, :c_call, :b_call, :class, :thread_begin]
     EndEvents = [:return, :c_return, :b_return, :end, :thread_end]
+    Events = StartEvents + EndEvents
 
     Methods = [:file, :lineno, :klass, :singleton_class, :method_id, :event, :tid, :pid]
 
