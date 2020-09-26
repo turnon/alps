@@ -1,5 +1,3 @@
-require "sequel"
-
 module Alps
   class DB
     module PointModel

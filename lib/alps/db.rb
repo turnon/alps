@@ -1,6 +1,7 @@
 require "fileutils"
 require "sequel"
 require "alps/point"
+require "alps/db/schema"
 require "alps/db/point_model"
 
 module Alps
@@ -13,27 +14,6 @@ module Alps
       def connect(name)
         path = File.join(Dir, "#{name}.db")
         db = Sequel.sqlite(path)
-
-        db.table_exists?(:points) || db.create_table(:points) do
-          primary_key :id
-          column :calling_id, Integer
-          column :event_id, Integer
-          column :tid, Integer
-          column :pid, Integer
-          column :src_file_id, Integer
-          column :lineno, Integer
-        end
-
-        db.table_exists?(:src_files) || db.create_table(:src_files) do
-          primary_key :id
-          column :path, String
-        end
-
-        db.table_exists?(:callings) || db.create_table(:callings) do
-          primary_key :id
-          column :method_call, String
-        end
-
         new(db)
       end
     end
@@ -43,6 +23,7 @@ module Alps
     attr_reader :point
 
     def initialize(db)
+      Schema.create(db)
       @db = db
 
       @callings = db[:callings]
