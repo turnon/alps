@@ -22,12 +22,22 @@ module Alps
             many_to_one :calling, :class => method_model
           end
 
-          point_model.association_join(:src_file, :calling)
+          columns = points.columns.map{ |col| Sequel.qualify(:points, col) } + [:path, :method_call]
+
+          point_model.association_join(:src_file, :calling).select(*columns).order(Sequel.qualify(:points, :id))
         end
       end
 
       def event
         Point::Events[event_id]
+      end
+
+      def method_call
+        @method_call ||= values[:method_call]
+      end
+
+      def path
+        @path ||= values[:path]
       end
 
     end
