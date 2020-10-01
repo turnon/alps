@@ -1,4 +1,5 @@
 require "fileutils"
+require "logger"
 require "sequel"
 require "alps/point"
 require "alps/db/schema"
@@ -25,6 +26,7 @@ module Alps
     def initialize(db)
       Schema.create(db)
       @db = db
+      @logger = Logger.new(STDOUT)
 
       @callings = db[:callings]
       @cache_callings = {}
@@ -34,6 +36,12 @@ module Alps
 
       @points = db[:points]
       @point = PointModel.construct_point_model(@points, @files, @callings)
+    end
+
+    def logger_switch!
+      o_logging = @db.loggers.any?
+      @db.logger = (o_logging ? nil : @logger)
+      !o_logging
     end
 
     def append(point)
