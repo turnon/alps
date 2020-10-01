@@ -7,12 +7,12 @@ require "alps/db/point_model"
 module Alps
   class DB
 
-    Dir = File.join(Dir.home, '.alps')
-    FileUtils.mkdir_p(Dir)
+    DefaultDir = File.join(Dir.home, '.alps')
+    FileUtils.mkdir_p(DefaultDir)
 
     class << self
       def connect(name)
-        path = File.join(Dir, "#{name}.db")
+        path = File.join(DefaultDir, "#{name}.db")
         db = Sequel.sqlite(path)
         new(db)
       end

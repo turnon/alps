@@ -2,7 +2,7 @@ PATH
   remote: .
   specs:
     alps (0.1.0)
-      plux (~> 0.1.7)
+      plux (~> 0.1.8)
       sequel (~> 5.36.0)
       sqlite3 (~> 1.4.2)
 
@@ -13,7 +13,7 @@ GEM
     method_source (0.9.2)
     minitest (5.14.1)
     nio4r (2.5.4)
-    plux (0.1.7)
+    plux (0.1.8)
       nio4r (~> 2.0)
     pry (0.12.2)
       coderay (~> 1.1.0)
