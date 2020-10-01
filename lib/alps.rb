@@ -10,7 +10,7 @@ module Alps
       server = Server.new(name)
 
       tp = TracePoint.new(*Point::Events) do |p|
-        p = Point.new(p)
+        p = Point.new(p, Time.now)
         client = (Thread.current[p.thread_current_id] ||= server.connect)
         client.puts(Marshal.dump(p))
       end

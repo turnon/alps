@@ -9,7 +9,7 @@ module Alps
     EndEvents = [:return, :c_return, :b_return, :end, :thread_end]
     Events = StartEvents + EndEvents
 
-    Methods = [:file, :lineno, :klass, :singleton_class, :method_id, :event, :tid, :pid]
+    Methods = [:file, :lineno, :klass, :singleton_class, :method_id, :event, :tid, :pid, :current_time]
 
     Methods.each do |method|
       class_eval <<-EOM
@@ -19,7 +19,7 @@ module Alps
       EOM
     end
 
-    def initialize(p)
+    def initialize(p, time)
       @f = p.path
       @l = p.lineno
       @k = p.defined_class.to_s
@@ -28,6 +28,7 @@ module Alps
       @e = p.event
       @t = Thread.current.object_id
       @p = Process.pid
+      @c = time
     end
 
     def thread_current_id

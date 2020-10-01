@@ -45,6 +45,7 @@ module Alps
           pid: point.pid,
           src_file_id: fetch_file_id(point),
           lineno: point.lineno,
+          current_time: point.current_time,
         )
       end
     end
