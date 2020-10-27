@@ -14,8 +14,16 @@ module Alps
     class << self
       def connect(name)
         path = File.join(DefaultDir, "#{name}.db")
-        db = Sequel.sqlite(path)
-        new(db)
+
+        File.open(path, File::RDWR|File::CREAT, 0644) do |file|
+          begin
+            file.flock(File::LOCK_EX)
+            db = Sequel.sqlite(path)
+            new(db)
+          ensure
+            file.flock(File::LOCK_UN)
+          end
+        end
       end
     end
 

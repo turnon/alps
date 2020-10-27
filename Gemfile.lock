@@ -3,6 +3,7 @@ PATH
   specs:
     alps (0.1.0)
       plux (~> 0.1.8)
+      rack (~> 2.0.7)
       sequel (~> 5.36.0)
       sqlite3 (~> 1.4.2)
 
@@ -18,6 +19,7 @@ GEM
     pry (0.12.2)
       coderay (~> 1.1.0)
       method_source (~> 0.9.0)
+    rack (2.0.7)
     rake (10.5.0)
     sequel (5.36.0)
     sqlite3 (1.4.2)

@@ -9,8 +9,11 @@ class AlpsTest < Minitest::Test
         1 + 1
       end
     end
-    a.new.a
 
-    sleep 2
+    10.times do
+      a.new.a
+
+      sleep 2
+    end
   end
 end
