@@ -12,8 +12,8 @@ module Alps
 
     def run
       fork do
-        trap 'INT' do Rack::Handler.default.shutdown end
-        Rack::Handler.default.run(self, :Host => '192.168.0.107', :Port => 3000)
+        webrick = Rack::Handler.get('webrick')
+        webrick.run(self, :Host => '192.168.0.107', :Port => 3000)
       end
     end
 

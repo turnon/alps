@@ -10,7 +10,7 @@ class AlpsTest < Minitest::Test
       end
     end
 
-    10.times do
+    5.times do
       a.new.a
 
       sleep 2
