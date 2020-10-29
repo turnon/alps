@@ -11,7 +11,7 @@ module Alps
             column :pid, Integer
             column :src_file_id, Integer
             column :lineno, Integer
-            column :current_time, DateTime
+            column :catch_time, DateTime
           end
 
           create_table_unless(db, :src_files) do

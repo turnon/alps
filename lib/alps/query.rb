@@ -5,6 +5,10 @@ module Alps
     class Point < ActiveRecord::Base
       belongs_to :src_file, class_name: '::Alps::Query::SrcFile'
       belongs_to :calling, class_name: '::Alps::Query::Calling'
+
+      def event
+        ::Alps::Point::Events[event_id]
+      end
     end
 
     class SrcFile < ActiveRecord::Base
