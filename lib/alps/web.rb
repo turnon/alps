@@ -1,4 +1,5 @@
 require "rack"
+require "alps/query"
 
 module Alps
   class Web
@@ -7,18 +8,20 @@ module Alps
     end
 
     def initialize(name)
-      @db = ::Alps::DB.connect(name)
+      @name = name
     end
 
     def run
       fork do
+        Query.connect(@name)
+
         webrick = Rack::Handler.get('webrick')
         webrick.run(self, :Host => '192.168.0.107', :Port => 3000)
       end
     end
 
     def call(env)
-      c = @db.point.count
+      c = Query::Point.joins(:src_file, :calling).count
       [200, {"Content-Type" => "text/plain"}, ["Hello from Rack -> #{c}"]]
     end
   end
