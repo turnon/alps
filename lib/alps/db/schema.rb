@@ -14,6 +14,8 @@ module Alps
             column :catch_time, DateTime
           end
 
+          add_index_unless(db, :points, [:tid, :catch_time])
+
           create_table_unless(db, :src_files) do
             primary_key :id
             column :path, String
@@ -27,6 +29,11 @@ module Alps
 
         def create_table_unless(db, name, &block)
           db.create_table(name, &block) unless db.table_exists?(name)
+        end
+
+        def add_index_unless(db, table, columns)
+          return if db.indexes(table).values.any?{ |cfg| cfg[:columns] == columns }
+          db.add_index(table, columns)
         end
       end
     end
